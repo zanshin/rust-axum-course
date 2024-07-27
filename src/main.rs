@@ -13,10 +13,11 @@ use tower_cookies::CookieManagerLayer;
 use tower_http::services::ServeDir;
 
 mod error;
+mod model;
 mod web;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<()> {
     let routes_all= Router::new()
         .merge(routes_hello())
         .merge(web::routes_login::routes())
@@ -33,43 +34,46 @@ async fn main() {
         .unwrap();
     // endregion: --- Start Server }}}
 
-    async fn main_response_mapper(res: Response) -> Response {
-        println!("->> {:12} - main_response_mapper", "RES_MAPPER");
+    Ok(())
 
-        println!();
-        res
-    }
-
-    fn routes_static() -> Router {
-        Router::new().nest_service("/", get_service(ServeDir::new("./")))
-    }
-
-    // region:    --- Routes Hello {{{
-    fn routes_hello() -> Router {
-        Router::new()
-            .route("/hello", get(handler_hello))
-            .route("/hello2/:name", get(handler_hello2))
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct HelloParams {
-        name: Option<String>,
-    }
-
-    // e.g., `/hello?name=Mark`
-    async fn handler_hello(Query(params): Query<HelloParams>) -> impl IntoResponse {
-        println!("->> {:12} - handler_hello - {params:?}", "HANDLER");
-
-        let name = params.name.as_deref().unwrap_or("World");
-        Html(format!("Hello <strong>{name}</strong>"))
-    }
-
-    // e.g., `/hello/Mark`
-    async fn handler_hello2(Path(name): Path<String>) -> impl IntoResponse {
-        println!("->> {:12} - handler_hello2 - {name:?}", "HANDLER");
-
-        Html(format!("Hello2 <strong>{name}</strong>"))
-    }
-
-    // endregion: --- Handler Hello }}}
 }
+
+async fn main_response_mapper(res: Response) -> Response {
+    println!("->> {:12} - main_response_mapper", "RES_MAPPER");
+
+    println!();
+    res
+}
+
+fn routes_static() -> Router {
+    Router::new().nest_service("/", get_service(ServeDir::new("./")))
+}
+
+// region:    --- Routes Hello {{{
+fn routes_hello() -> Router {
+    Router::new()
+        .route("/hello", get(handler_hello))
+        .route("/hello2/:name", get(handler_hello2))
+}
+
+#[derive(Debug, Deserialize)]
+struct HelloParams {
+    name: Option<String>,
+}
+
+// e.g., `/hello?name=Mark`
+async fn handler_hello(Query(params): Query<HelloParams>) -> impl IntoResponse {
+    println!("->> {:12} - handler_hello - {params:?}", "HANDLER");
+
+    let name = params.name.as_deref().unwrap_or("World");
+    Html(format!("Hello <strong>{name}</strong>"))
+}
+
+// e.g., `/hello/Mark`
+async fn handler_hello2(Path(name): Path<String>) -> impl IntoResponse {
+    println!("->> {:12} - handler_hello2 - {name:?}", "HANDLER");
+
+    Html(format!("Hello2 <strong>{name}</strong>"))
+}
+
+// endregion: --- Handler Hello }}}

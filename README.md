@@ -13,21 +13,21 @@ Here is a Per Chapter Fork by @FloWi. Big thanks!
 
 ## Development REPL
 ### Terminal 1 - To run the server.
-cargo watch -q -c -w src/ -x "run"
+    cargo watch -q -c -w src/ -x "run"
 
 ### Terminal 2 - To run the tests.
 Run as code from `examples/` 
-cargo watch -q -c -w examples/ -x "run --example quick_dev"
+    cargo watch -q -c -w examples/ -x "run --example quick_dev"
 
 Run as a test from `tests/`
-cargo watch -q -c -w tests/ -x "test -q quick_dev -- --nocapture"
+    cargo watch -q -c -w tests/ -x "test -q quick_dev -- --nocapture"
 
 ## Development
 # Terminal 1 - To run the server.
-cargo run
+    cargo run
 
 # Terminal 2 - To run the tests.
-cargo test quick_dev -- --nocapture
+    cargo test quick_dev -- --nocapture
 
 ## Notes
 

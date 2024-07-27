@@ -1,4 +1,6 @@
-use axum::extract::Path;
+use axum::extract::{Path, State};
+use axum::routing::{delete, post};
+use axum::{Json, Router};
 
 use crate::model::{ModelController, Ticket, TicketForCreate};
 use crate::Result;
@@ -37,7 +39,7 @@ async fn delete_ticket(
 ) -> Result<Json<Ticket>> {
     println!("->> {:12} - delete_ticket", "HANDLER");
 
-    let tickets = mc.delete_ticket(id).await?;
+    let ticket = mc.delete_ticket(id).await?;
 
     Ok(Json(ticket))
 }

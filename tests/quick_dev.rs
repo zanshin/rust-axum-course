@@ -11,7 +11,7 @@ async fn quick_dev() -> Result<()> {
     // hc.do_get("/hello?name=Mark").await?.print().await?;
 
     // positional parameter
-    // hc.do_get("/hello2/Mark").await?.print().await?;
+    hc.do_get("/hello2/Mark").await?.print().await?;
 
     // api/login
     let req_login = hc.do_post(
